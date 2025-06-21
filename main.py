@@ -2,14 +2,18 @@ from flask import Flask, request
 import datetime
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-
+from io import StringIO
 
 app = Flask(__name__)
 
 scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets',
          "https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
 
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+creds_json = os.environ.get("GOOGLE_CREDS")
+creds_dict = json.loads(creds_json)
+creds_file = StringIO(json.dumps(creds_dict))
+
+creds = ServiceAccountCredentials.from_json_keyfile_name(creds_file, scope)
 client = gspread.authorize(creds)
 sheet = client.open("WhatsApp Replies").messages
 
