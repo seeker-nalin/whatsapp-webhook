@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def verify():
-    verify_token = "biozia_token"
+    verify_token = "EAAUGNtMZA7RIBO53DLRb9KUFcZBSPQpZAkVQcfQmzNGp5nTFR0YlRiX8owZAvLpqxwa4OOMYZAgZBscyuR96QypLOOzZBrNx0QYk4UmvtGvKhHZBvGGULJqsZBZBb6m5GZCknwUfWMqUfBbdyr4XSl6aGIZCvIDExZCimE2vodLhNTKlKqRqer4ZCT0k3T5OYU8d72M4i8EUIBUlRoCZBokEZATnTDt5YwjGbL174sWZCq6EmdRnrdbKaZCZBRzd6Ob"
     mode = request.args.get("hub.mode")
     token = request.args.get("hub.verify_token")
     challenge = request.args.get("hub.challenge")
