@@ -15,7 +15,7 @@ creds_json = os.environ.get("GOOGLE_CREDS")
 creds_dict = json.loads(creds_json)
 creds_file = StringIO(json.dumps(creds_dict))
 
-creds = ServiceAccountCredentials.from_json_keyfile_name(creds_file, scope)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
 sheet = client.open("WhatsApp Replies").messages
 
