@@ -17,7 +17,7 @@ creds_file = StringIO(json.dumps(creds_dict))
 
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
-sheet = client.open("WhatsApp Replies").messages
+sheet = client.open("WhatsApp Replies").sheet1
 
 @app.route('/', methods=['GET'])
 def verify():
