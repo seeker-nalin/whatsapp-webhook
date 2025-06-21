@@ -1,7 +1,17 @@
 from flask import Flask, request
 import datetime
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
 
 app = Flask(__name__)
+
+scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets',
+         "https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
+
+creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+client = gspread.authorize(creds)
+sheet = client.open("WhatsApp Replies").messages
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -18,6 +28,17 @@ def verify():
 def webhook():
     data = request.get_json()
     print(f"Received data: {data}")
+    try:
+        messages = data['entry'][0]['changes'][0]['value']['messages']
+        for msg in messages:
+            phone = msg['from']
+            message = msg['text']['body']
+            msg_id = msg['id']
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            sheet.append_row([timestamp, phone, message, msg_id])
+    except KeyError:
+        pass
+
     # In production, you can add code here to forward to Google Sheets
     return "EVENT_RECEIVED", 200
 
